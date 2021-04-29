@@ -1,7 +1,7 @@
 {
-  "name": "vue3template",
+  "name": "moviesdb",
   "version": "1.0.0",
-  "author": "Rodolfo Romamn <rromanv@gmail.com>",
+  "author": "Mario Ortiz <morti137@stu.southtexascollege.edu>",
   "license": "ISC",
   "scripts": {
     "dev": "vite",
