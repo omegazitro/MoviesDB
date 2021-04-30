@@ -19,12 +19,12 @@
       class="flex flex-col items-center py-2 space-y-4 overflow-y-scroll h-5/6"
     >
       <div
-        v-for="(n, index) in 3"
+        v-for="({ text, userName }, index) in comments"
         :key="index"
         class="w-1/2 px-4 py-2 text-left rounded bg-coolGray-100"
       >
-        Comment Section
-        <p class="mt-4 ml-auto text-sm text-right">Username</p>
+        {{ text }}
+        <p class="mt-4 ml-auto text-sm text-right">{{ userName }}</p>
       </div>
       <input
         type="text"
@@ -32,26 +32,35 @@
         id=""
         placeholder="New Comment"
         class="w-1/2 rounded bg-coolGray-100"
+        v-model="newComment"
+        @change="add"
       />
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineEmit, defineProps } from 'vue'
-import { bgBaseURL } from '~/helpers/useMovies'
+  import { defineEmit, defineProps, ref } from 'vue'
+  import { bgBaseURL } from '~/helpers/useMovies'
+  import { database } from '~/helpers/useFirebase'
 
-const emit = defineEmit(['close'])
+  const newComment = ref('')
+  const emit = defineEmit(['close'])
 
-const props = defineProps({
-  movie: {
-    type: Object,
-    default: () => {
-      return {
-        title: '',
-        backdrop_path: '',
-      }
+  const props = defineProps({
+    movie: {
+      type: Object,
+      default: () => {
+        return {
+          title: '',
+          backdrop_path: '',
+        }
+      },
     },
-  },
-})
+  })
+  const { comments, addComment } = database(props.movie.id)
+  const add = () => {
+    addComment(newComment.value)
+    newComment.value = ''
+  }
 </script>
